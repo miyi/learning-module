@@ -1,0 +1,100 @@
+<html>
+  <script type="dagger/modules">
+    {
+      start: {uri: '#start', type: 'string'},
+      scene1: {
+        type: 'namespace',
+        content: {
+          one: {uri: '#scene1_1', type: 'string'},
+          two: {uri: '#scene1_2', type: 'string'},
+        },
+        explicit: true
+      },
+      scene2: {
+        type: 'namespace',
+        content: {
+          one: {uri: '#scene2_1', type: 'string'},
+          two: {uri: '#scene2_2', type: 'string'},
+        },
+        explicit: true
+      },
+      scene3: {
+        type: 'namespace',
+        content: {
+          one: {uri: '#scene3_1', type: 'string'},
+          two: {uri: '#scene3_2', type: 'string'}
+        },
+        explicit: true
+      },
+      scene4: {
+        type: 'namespace',
+        content: {
+          one: {uri: '#scene4_1', type: 'string'},
+          hint: {uri: '#scene4_hint', type: 'string'},
+          solution: {uri: '#scene4_solution', type: 'string'}
+        },
+        explicit: true
+      }
+    }
+  </script>
+  <template id="start">
+<div>Hello class of 2024!</div>
+  </template>
+  <template id="scene1_1">
+<div +loading="{year: 2024}">
+  Hello class of 2024!
+</div>
+  </template>
+  <template id="scene1_2">
+<div +loading="{year: 2024}">
+  Hello class of ${year}!
+</div>
+  </template>
+  <template id="scene2_1">
+<div +loading="{year: 2024}">
+  <div>Hello class of ${year}</div>
+  <button>next year</button>
+</div>
+  </template>
+  <template id="scene2_2">
+<div +loading="{year: 2024}">
+  <div>Hello class of ${year}</div>
+  <button +click="year++">next year</button>
+</div>
+  </template>
+  <template id="scene3_1">
+<div +loading="{year: 2024}">
+  <input type="number"></input>
+  <div>Hello class of ${year}!</div>
+  <button +click="year++">next year</button>
+</div>
+  </template>
+  <template id="scene3_2">
+<div +loading="{year: 2024}">
+  <input type="number" $value="year"></input>
+  <div>Hello class of ${year}!</div>
+  <button +click="year++">next year</button>
+</div>
+  </template>
+  <template id="scene4_1">
+<div +loading="{year: 2024, msg: 'hello'}">
+  <div>${msg} ${year}!</div>
+  <input $value=""></input>
+  <button +click="">click me!</button>
+</div>
+  </template>
+  <template id="scene4_hint">
+<div +loading="{year: 2024, msg: 'hello', input: ''}">
+  <div>${msg} ${year}!</div>
+  <input $value="input"></input>
+  <button +click="">click me!</button>
+</div>
+  </template>
+  <template id="scene4_solution">
+<div +loading="{year: 2024, msg: 'hello', input: ''}">
+  <div>${msg} ${year}!</div>
+  <input $value="input"></input>
+  <button +click="msg=input, input=''">click me!</button>
+</div>  
+  </template>
+</html>

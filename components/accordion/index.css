@@ -1,0 +1,84 @@
+.accordion {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-header {
+  cursor: pointer;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  background-color: #52364e;
+  color: #ffabff;
+  font-size: 0.75;
+  padding: 0 1rem;
+  transition: font-size 0.3s, padding 0.3s;
+}
+
+.panel-header.open {
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+}
+
+.panel-content {
+  padding: 1rem;
+}
+
+.panel-container {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: flex-grow 0.3s;
+}
+
+.panel-container.open {
+  flex-grow: 1;
+  transition: flex-grow 0.3s;
+}
+
+.panel-body {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  margin-top: -100%;
+  transition: margin-top 0.3s;
+}
+
+.panel-body.open {
+  margin-top: 0;
+  overflow: scroll;
+  transition: margin-top 0.3s;
+}
+
+.expand-container {
+  overflow: auto;
+}
+
+.lock {
+  filter: contrast(60%);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.next-btn {
+  --color: #ffabff;
+  --hover: #52364e;
+  transition: 0.25s;
+  border: 0;
+  background-color: #00000000;
+  color: var(--color);
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin: 1rem 0;
+  height: 2rem;
+  box-shadow: 0.3rem 0.3rem 0 0 var(--color),
+    inset 0.3rem 0.3rem 0 0 var(--color);
+  cursor: pointer;
+
+}
+
+.next-btn:hover,
+.next-btn:focus {
+  box-shadow: 0 0 0 0 var(--hover), inset 6em 3.5em 0 0 var(--hover);
+}

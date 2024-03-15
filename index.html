@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Monaco Editor for HTML</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/editor/editor.main.css"
+    />
+    <link rel="stylesheet" href="index.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <script src="index.js"></script>
+    <script
+      type="module"
+      crossorigin="anonymous"
+      src="dagger.js"
+      defer
+    ></script>
+    <script type="dagger/modules">
+      {
+        js: "./index.js",
+        inspection: "./inspection.js",
+        demos: {uri: './tests/demo_bin.html', explicit: true},
+        navbar: "./myModules/navbar.html",
+        lesson: './intro-directives/lesson.html',
+        accordion: { uri: './components/accordion/index.html', explicit: true},
+        lesson_styles: './lesson.css',
+      }
+    </script>
+  </head>
+  <body
+    dg-cloak
+    +loading="{
+      monaco: null,
+      editor: null,
+      editorValue: null,
+      iframe: null,
+      iframeBody: null,
+      checking: false,
+      scopeTree: null,
+      side: null
+    }"
+    +loaded="monaco=monacoEditor"
+  >
+    <div id="mySidepanel" class="sidepanel" +loaded="side=$node">
+      <a
+        href="javascript:void(0)"
+        class="closebtn"
+        +click="side.style.width='0'"
+        ><span class="material-icons">highlight_off</span></a
+      >
+      <a href="#">About</a>
+      <a href="#">Services</a>
+      <a href="#">Clients</a>
+      <a href="#">Contact</a>
+    </div>
+
+    <navbar +loading="{sidepanel: side}"></navbar>
+    <div id="outer" +loading="{src: 'readme.md'}">
+      <div class="box-column" id="md">
+        <accordion>
+          <panel +loading="{id: 1, header: 'Creating Scope Variables'}">
+            <lesson.one></lesson.one>
+            <next></next>
+          </panel>
+          <panel +loading="{id: 2, header: 'Using Event Directives'}">
+            <lesson.two></lesson.two>
+            <next></next>
+          </panel>
+          <panel +loading="{id: 3, header: 'Using Control Directives'}">
+            <lesson.three></lesson.three>
+            <next></next>
+          </panel>
+          <panel +loading="{id: 4, header: 'Quiz'}">
+            <lesson.four></lesson.four>
+          </panel>
+        </accordion>
+      </div>
+      <div class="handle" +mouseDown=""></div>
+      <div class="box-column" id="container">
+        <div>
+          <button
+            class="icon-button"
+            +click="editorValue=editor.getValue()"
+            data-title="Run Code"
+          >
+            <span class="material-icons"> play_arrow </span>
+          </button>
+          <button
+            class="icon-button"
+            +click="resetEditor(monaco)"
+            data-title="Reset Code"
+          >
+            <span class="material-icons"> replay </span>
+          </button>
+          <button
+            class="icon-button"
+            +click="downloadCode(monaco)"
+            data-title="Download Code"
+          >
+            <span class="material-icons"> file_download</span>
+          </button>
+        </div>
+
+        <div
+          class="editor"
+          +loaded="editor=initMonaco(monaco, $node),loadEditor(demos.start, $scope)"
+        ></div>
+      </div>
+      <div class="handle"></div>
+      <div class="box-column">
+        <iframe
+          id="htmlOutput"
+          $src="getGeneratedPageURL(editorValue)"
+          +loaded="iframe=$node"
+        ></iframe>
+      </div>
+    </div>
+
+    <!--    <div>-->
+    <!--      <button-->
+    <!--              +click="scopeTree = getScopeTree(iframe.contentWindow.document.body), console.log(scopeTree)"-->
+    <!--      >-->
+    <!--        get scope tree-->
+    <!--      </button>-->
+    <!--      <button-->
+    <!--              +click="monaco.getModels()[0].setValue(test1), editorValue=editor.getValue()"-->
+    <!--      >-->
+    <!--        load test1-->
+    <!--      </button>-->
+    <!--      <button +click="loadTest(test2, $scope)">load test2</button>-->
+    <!--      <div $each="data">-->
+    <!--        <button +click="getData(item), editorValue=editor.getValue()">-->
+    <!--          ${item}-->
+    <!--        </button>-->
+    <!--      </div>-->
+    <!--    </div>-->
+  </body>
+  <script></script>
+</html>

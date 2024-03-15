@@ -1,0 +1,64 @@
+<html>
+  <script type="dagger/modules">
+    {
+      view: "#view",
+      css: "#style"
+    }
+  </script>
+  <template id="view">
+    <div
+      class="code-img"
+      +loading="{hover: false}"
+      +mouseover="hover=true"
+      +mouseout="hover=false"
+      +click="loadEditor(code, $scope)"
+    >
+      <div
+        class="code-img-header"
+        $style="hover? 'color: #FFABFF; background-color: #944488;':null"
+      >
+        <pre>${hover?"Copy to Editor on Click":"Click Code"}</pre>
+      </div>
+      <img $src="img_src" />
+    </div>
+  </template>
+  <!-- <template id="view">
+    <div
+      class="code-img"
+      +loading="{hover: false}"
+      +mouseenter="hover=true"
+      +mouseleave="hover=false"
+    >
+      
+        ${hover?"Copy to Editor":"Code"}
+      </div>
+      <img class="code-image" $src="img" />
+    </div>
+  </template> -->
+  <style type="dagger/style" id="style">
+    .code-img {
+      display: flex;
+      flex-direction: column;
+      border: 4px solid #cdcdcd;
+      margin: 1rem 0;
+      transition: all 0.3s;
+      width: auto;
+      cursor: pointer;
+    }
+    .code-img:hover {
+      border-color: #944488;
+    }
+    .code-img-header {
+      padding: 2px;
+      color: #cdcdcd;
+      font-size: 0.75rem;
+      background-color: #52364e;
+    }
+    .code-img-header pre {
+      margin: 0;
+    }
+    .code-image {
+      width: 100%;
+    }
+  </style>
+</html>

@@ -1,0 +1,132 @@
+<html>
+  <script type="dagger/modules">
+    {
+      one: '#one',
+      two: '#two',
+      three: '#three',
+      four: '#four',
+      codeimg: './code-img/index.html',
+      demos: {uri: './scenes.html', explicit: true},
+    }
+  </script>
+  <template id="one">
+    <div>
+      Let's start with static html. Now we can add dagger directives make it
+      more interactive.
+    </div>
+    <br />
+    <div>
+      Directives work by setting specific attributes on html elements to achieve
+      the directive specifc outcomes. The most common is the +loading directive
+      that creates a data memory, or state, for the component. Let's create a
+      year variable for our component:
+    </div>
+    <codeimg
+      +loading="{code: demos.scene1.one, img_src: '/images/scene1.one.png'}"
+    ></codeimg>
+    <div>
+      You can use the +loading directive on any html elements. The variables we
+      create inside the +loading directive are called scope variables. We can
+      interact with them through other directives. For example, the
+      <span @raw>${}</span> directive reads strings and displays them as html
+      content. We can now replace the hard coded 2024 number like so:
+    </div>
+    <codeimg
+      +loading="{code: demos.scene1.two, img_src: '/images/scene1.two.png'}"
+    ></codeimg>
+    <br />
+  </template>
+  <template id="two">
+    <div>
+      All dagger directives execute their value as regular javascript
+      expressions. This means we can manipulate our scope variables like we do
+      in javascript. Let's make our component more interactive by creating a
+      next year button that adds one year to our scope variable on click:
+    </div>
+    <codeimg
+      +loading="{code: demos.scene2.one, img_src:
+    '/images/scene2.one.png'}"
+    ></codeimg>
+    <div>
+      To engage with the scope variable year. Inside the directive expression we
+      can update values just like regular javascript like so:
+    </div>
+    <codeimg
+      +loading="{code: demos.scene2.two, img_src:
+      '/images/scene2.two.png'}"
+    ></codeimg>
+    <div>
+      +click is an event directive that triggers based on the event type. Try
+      clicking on the button to update the year!
+    </div>
+    <div>
+      Under the hood, the +click triggers it's directive expression when the
+      user sends a click event. The directive expression will update the
+      corresponding scope variables, and <span @raw>${}</span> will
+      automatically detect those changes to refresh the html content.
+    </div>
+  </template>
+  <template id="three">
+    <div>
+      There is another type of directives called control directives used for
+      creating 2 way data-binding. Let's create an the input element as an
+      example to see how that works.
+    </div>
+    <codeimg
+      +loading="{code: demos.scene3.one, img_src:
+    '/images/scene3.one.png'}"
+    ></codeimg>
+    <div>
+      Next we will add the $value directive to the input element to connect the
+      input value with the year scope variable.
+    </div>
+    <codeimg
+      +loading="{code: demos.scene3.two, img_src:
+    '/images/scene3.two.png'}"
+    ></codeimg>
+    <div>
+      Now you can use the input to adjust the year scope variable, and that the
+      input value also responds to scope variable change. Try adjusting the
+      input and clicking on the next year button. Control directives can
+      establish 2 way data bindings with scope variables. We can use this simple
+      mechanic to create all sorts of interactive UI.
+    </div>
+  </template>
+  <template id="four">
+    <div>
+      Now that we know how to use scope variables, +loading, +click, and $input.
+      See if you can use the same directives on your own. This will be your
+      starting code:
+    </div>
+    <codeimg
+      +loading="{code: demos.scene4.one, img_src:
+  '/images/scene4.one.png'}"
+    ></codeimg>
+    <div>Make changes to the editor to achieve the following:</div>
+    <div>
+      <input type="checkbox" />
+      <span>
+        Edit the input element and the button such that the text value in the
+        input box shows up as msg in the content upon clicking the click me
+        button.
+      </span>
+    </div>
+    <div>
+      <input type="checkbox" />
+      <span>
+        After click on the click me button, the text box empties without
+        affecting the msg content.
+      </span>
+    </div>
+    <button class="next-btn" +click="loadEditor(demos.scene4.hint, $scope)">
+      HINT...
+    </button>
+    <button
+      class="next-btn"
+      style="--color: green;"
+      +click="loadEditor(demos.scene4.solution, $scope)"
+    >
+      SOLUTION
+    </button>
+  </template>
+</html>

@@ -1,0 +1,54 @@
+<html>
+  <script type="dagger/modules">
+    {
+      view: {uri: "#view", init: {active: 1, lock: false, progress: 1}},
+      panel: "#panel",
+      next: "#next_btn",
+      css: './index.css',
+      js: '#script'
+    }
+  </script>
+  accordion: {active: int, progress: int}
+  <template class="accordion" id="view" @data>
+    <div class="accordion" +loading="{active: 1, progress: 1}">
+      <template @slot></template>
+    </div>
+  </template>
+  panel: {open; boolean, id: int, active: int, progress: int}
+  <template id="panel">
+    <div
+      class="panel-container"
+      +loading="{open: false}"
+      $class="{open, lock: progress<id}"
+      +loading="{header: header}"
+    >
+      <div
+        class="panel-header"
+        $class="{open}"
+        +click="active=id"
+        $watch="active===id?open=true:open=false"
+      >
+        ${header}
+      </div>
+      <div class="expand-container">
+        <div class="panel-content" $class="{open}" $exist="$scope.panelContent">
+          ${$scope.panelContent?panelContent:''}
+        </div>
+        <div $exist="!$scope.panelContent" class="panel-body" $class="{open}">
+          <template @slot></template>
+        </div>
+      </div>
+    </div>
+  </template>
+  <template id="next_btn">
+    <button class="next-btn" +click="next($scope)">NEXT</button>
+  </template>
+  <script id="script" type="dagger/script">
+    export const next = ($scope) => {
+      if ($scope.id === $scope.progress) {
+        $scope.progress++
+      }
+      $scope.active++
+    }
+  </script>
+</html>

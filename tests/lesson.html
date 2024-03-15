@@ -1,0 +1,30 @@
+<html>
+  <script type="dagger/modules">
+    {
+      one: '#one',
+      two: '#two',
+      three: '#three',
+      demos: {uri: './demo_bin.html', explicit: true }
+    }
+  </script>
+  <template id="one">
+    <div>
+      Let's start with static html. Now we can add dagger directives make it
+      more interactive.
+    </div>
+    <br />
+    <ol>
+      <li>
+        Let's create a state for the element by adding the +loading directive
+        like an attribute like so:
+      </li>
+      <li>
+        Next we can display the data we created by using the $\{ } directive:
+      </li>
+    </ol>
+    <br>
+    <button +click="loadEditor(demos.one, $scope)">copy to editor</button>
+  </template>
+  <template id="two"> </template>
+  <template id="three"> </template>
+</html>

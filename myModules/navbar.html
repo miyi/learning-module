@@ -1,0 +1,25 @@
+<html>
+  <script type="dagger/modules">
+    {
+      view: "#view",
+      nav_bar: "../components/navbar/index.html",
+    }
+  </script>
+  <template id="view">
+    <nav_bar>
+      <left_group>
+
+          <div>
+            <button class="openbtn" +click="sidepanel.style.width = '250px'"><span class="material-icons" style="color: white">list</span></button>
+          </div>
+      </left_group>
+      <span>Learning Module</span>
+      <center_group>
+<!--        <btn +loading="{label: 'Demos', link: 'demos'}"></btn>-->
+<!--        <btn +loading="{label: 'Showcase', link: 'showcase'}"></btn>-->
+        <btn +loading="{label: 'Previous', link: 'tutorial'}"></btn>
+        <btn +loading="{label: 'Next', link: 'docs'}"></btn>
+      </center_group>
+    </nav_bar>
+  </template>
+</html>
