@@ -51,11 +51,12 @@
 
 .expand-container {
   height: 0;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .expand-container.open {
   height: 100%;
+  overflow: auto;
 }
 
 .lock {
