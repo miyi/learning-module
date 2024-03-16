@@ -51,6 +51,7 @@
 
 .expand-container {
   height: 0;
+  overflow: auto;
 }
 
 .expand-container.open {
