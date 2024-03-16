@@ -52,7 +52,11 @@
 }
 
 .expand-container {
-  overflow: auto;
+  height: 0;
+}
+
+.expand-container.open {
+  height: auto;
 }
 
 .lock {
@@ -75,7 +79,6 @@
   box-shadow: 0.3rem 0.3rem 0 0 var(--color),
     inset 0.3rem 0.3rem 0 0 var(--color);
   cursor: pointer;
-
 }
 
 .next-btn:hover,
