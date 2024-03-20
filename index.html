@@ -19,15 +19,14 @@
       defer
     ></script>
     <script type="dagger/modules">
-      {
-        js: "./index.js",
-        inspection: "./inspection.js",
-        demos: {uri: './tests/demo_bin.html', explicit: true},
-        navbar: "./myModules/navbar.html",
-        lesson: './intro-directives/lesson.html',
-        accordion: { uri: './components/accordion/index.html', explicit: true},
-        lesson_styles: './lesson.css',
-      }
+            {
+              js: "./index.js",
+              inspection: "./inspection.js",
+              navbar: "./myModules/navbar.html",
+              lesson_styles: './lesson.css',
+              intro_directives: '/intro-directives/index.html',
+              esm_editor: {uri:'./monaco.esm.js', type: 'script', anonymous: false}
+            }
     </script>
   </head>
   <body
@@ -40,7 +39,8 @@
       iframeBody: null,
       checking: false,
       scopeTree: null,
-      side: null
+      side: null,
+      starting_code: null
     }"
     +loaded="monaco=monacoEditor"
   >
@@ -60,23 +60,7 @@
     <navbar +loading="{sidepanel: side}"></navbar>
     <div id="outer" +loading="{src: 'readme.md'}">
       <div class="box-column" id="md">
-        <accordion>
-          <panel +loading="{id: 1, header: 'Creating Scope Variables'}">
-            <lesson.one></lesson.one>
-            <next></next>
-          </panel>
-          <panel +loading="{id: 2, header: 'Using Event Directives'}">
-            <lesson.two></lesson.two>
-            <next></next>
-          </panel>
-          <panel +loading="{id: 3, header: 'Using Control Directives'}">
-            <lesson.three></lesson.three>
-            <next></next>
-          </panel>
-          <panel +loading="{id: 4, header: 'Quiz'}">
-            <lesson.four></lesson.four>
-          </panel>
-        </accordion>
+        <intro_directives></intro_directives>
       </div>
       <div class="handle" +mouseDown=""></div>
       <div class="box-column" id="container">
@@ -104,10 +88,7 @@
           </button>
         </div>
 
-        <div
-          class="editor"
-          +loaded="editor=initMonaco(monaco, $node),loadEditor(demos.start, $scope)"
-        ></div>
+        <div class="editor" +loaded="editor=initMonaco(monaco, $node)"></div>
       </div>
       <div class="handle"></div>
       <div class="box-column">

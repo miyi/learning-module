@@ -1,6 +1,6 @@
 import * as monaco from "https://esm.sh/monaco-editor";
 
-export const monacoEditor = monaco.editor;
+const monacoEditor = monaco.editor;
 
 const EMPTY_ELEMENTS = [
   "area",
@@ -416,7 +416,7 @@ monaco.languages.setLanguageConfiguration("daggerJs", {
   },
 });
 
-export const initMonaco = (monaco, $node) => {
+ const initMonaco = (monaco, $node) => {
   if (monaco) {
     return monaco.create($node, {
       value: [
@@ -440,7 +440,7 @@ export const initMonaco = (monaco, $node) => {
     });
   }
 };
-export const downloadCode=(monaco) => {
+ const downloadCode=(monaco) => {
     const url = getGeneratedPageURL(monaco.getModels()[0].getValue());
     const a = document.createElement("a");
     a.href = url;
@@ -449,7 +449,7 @@ export const downloadCode=(monaco) => {
     URL.revokeObjectURL(url);
 }
 
-export const getGeneratedPageURL = (html) => {
+ const getGeneratedPageURL = (html) => {
   const dagger_cdn = "https://cdn.jsdelivr.net/npm/@miyi/dagger.js@0.9.22";
   const getBlobURL = (code, type) => {
     const blob = new Blob([code], { type });
@@ -470,7 +470,7 @@ ${html || ""}
 
   return getBlobURL(source, "text/html");
 };
-export const getData = (URI, monaco) => {
+ const getData = (URI, monaco) => {
   fetch(URI)
     .then((res) => res.text())
     .then((text) => {
@@ -478,12 +478,12 @@ export const getData = (URI, monaco) => {
     });
 };
 
-export const loadEditor = (code, $scope) => {
+ const loadEditor = (code, $scope) => {
   $scope.monaco.getModels()[0].setValue(code);
   $scope.editorValue = $scope.editor.getValue();
 };
 
-export const resetEditor = (monaco) => {
+ const resetEditor = (monaco) => {
   let value =  [
         `<div class="card" +loading="{a: '123', b: 1}" $watch="b++">`,
         "     ${a}",
@@ -492,3 +492,5 @@ export const resetEditor = (monaco) => {
       ].join("\n");
     monaco.getModels()[0].setValue(value);
 }
+
+export {monacoEditor, initMonaco, downloadCode, getGeneratedPageURL, getData, loadEditor, resetEditor}

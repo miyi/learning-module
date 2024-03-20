@@ -1,0 +1,29 @@
+<html>
+  <script type="dagger/modules">
+    {
+      view: '#view',
+      accordion: '/components/accordion/index.html',
+      lesson: './lesson.html',
+    }
+  </script>
+  <template id="view">
+    <accordion>
+      <panel +loading="{id: 1, header: 'Creating Scope Variables'}">
+        <lesson.one></lesson.one>
+        <next></next>
+      </panel>
+      <panel +loading="{id: 2, header: 'Using Event Directives'}">
+        <lesson.two></lesson.two>
+        <next></next>
+      </panel>
+      <panel +loading="{id: 3, header: 'Using Control Directives'}">
+        <lesson.three></lesson.three>
+        <next></next>
+      </panel>
+      <panel +loading="{id: 4, header: 'Quiz'}">
+        <lesson.four></lesson.four>
+        <next></next>
+      </panel>
+    </accordion>
+  </template>
+</html>
