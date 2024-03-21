@@ -1,7 +1,3 @@
-import * as monaco from "https://esm.sh/monaco-editor";
-
-const monacoEditor = monaco.editor;
-
 const EMPTY_ELEMENTS = [
   "area",
   "base",
@@ -325,19 +321,7 @@ const dgjsTokenizer = {
   // -- END <style> tags handling
 };
 
-monaco.languages.register({
-  id: "daggerJs",
-  extensions: [".html"],
-  aliases: ["daggerJs", "dg"],
-  mimetypes: ["text/html"],
-});
-
-monaco.languages.setMonarchTokensProvider("daggerJs", {
-  ignoreCase: true,
-  tokenizer: dgjsTokenizer,
-});
-
-monaco.editor.defineTheme("dgTheme", {
+const dgTheme = {
   base: "vs-dark",
   inherit: true,
   rules: [
@@ -349,76 +333,90 @@ monaco.editor.defineTheme("dgTheme", {
   colors: {
     "editor.background": "#09151b",
   },
-});
+};
 
-monaco.languages.setLanguageConfiguration("daggerJs", {
-  wordPattern:
-    /(-?\d*\.\d\w*)|([^\`\~\!\@\$\^\&\*\(\)\=\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\s]+)/g,
+const initLanguages = (languages) => {
+  languages.register({
+    id: "daggerJs",
+    extensions: [".html"],
+    aliases: ["daggerJs", "dg"],
+    mimetypes: ["text/html"],
+  });
+  languages.setMonarchTokensProvider("daggerJs", {
+    ignoreCase: true,
+    tokenizer: dgjsTokenizer,
+  });
+  languages.setLanguageConfiguration("daggerJs", {
+    wordPattern:
+      /(-?\d*\.\d\w*)|([^\`\~\!\@\$\^\&\*\(\)\=\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\s]+)/g,
 
-  comments: {
-    blockComment: ["<!--", "-->"],
-  },
+    comments: {
+      blockComment: ["<!--", "-->"],
+    },
 
-  brackets: [
-    ["<!--", "-->"],
-    ["<", ">"],
-    ["{", "}"],
-    ["(", ")"],
-  ],
+    brackets: [
+      ["<!--", "-->"],
+      ["<", ">"],
+      ["{", "}"],
+      ["(", ")"],
+    ],
 
-  autoClosingPairs: [
-    { open: "{", close: "}" },
-    { open: "[", close: "]" },
-    { open: "(", close: ")" },
-    { open: "<", close: ">" },
-    { open: '"', close: '"' },
-    { open: "'", close: "'" },
-  ],
+    autoClosingPairs: [
+      { open: "{", close: "}" },
+      { open: "[", close: "]" },
+      { open: "(", close: ")" },
+      { open: "<", close: ">" },
+      { open: '"', close: '"' },
+      { open: "'", close: "'" },
+      { open: "`", close: "`" },
+    ],
 
-  surroundingPairs: [
-    { open: '"', close: '"' },
-    { open: "'", close: "'" },
-    { open: "{", close: "}" },
-    { open: "[", close: "]" },
-    { open: "(", close: ")" },
-    { open: "<", close: ">" },
-  ],
+    surroundingPairs: [
+      { open: '"', close: '"' },
+      { open: "'", close: "'" },
+      { open: "{", close: "}" },
+      { open: "[", close: "]" },
+      { open: "(", close: ")" },
+      { open: "<", close: ">" },
+    ],
 
-  onEnterRules: [
-    {
-      beforeText: new RegExp(
-        `<(?!(?:${EMPTY_ELEMENTS.join(
-          "|"
-        )}))([_:\\w][_:\\w-.\\d]*)([^/>]*(?!/)>)[^<]*$`,
-        "i"
-      ),
-      afterText: /^<\/([_:\w][_:\w-.\d]*)\s*>$/i,
-      action: {
-        indentAction: monaco.languages.IndentAction.IndentOutdent,
+    onEnterRules: [
+      {
+        beforeText: new RegExp(
+          `<(?!(?:${EMPTY_ELEMENTS.join(
+            "|"
+          )}))([_:\\w][_:\\w-.\\d]*)([^/>]*(?!/)>)[^<]*$`,
+          "i"
+        ),
+        afterText: /^<\/([_:\w][_:\w-.\d]*)\s*>$/i,
+        action: {
+          indentAction: languages.IndentAction.IndentOutdent,
+        },
+      },
+      {
+        beforeText: new RegExp(
+          `<(?!(?:${EMPTY_ELEMENTS.join(
+            "|"
+          )}))(\\w[\\w\\d]*)([^/>]*(?!/)>)[^<]*$`,
+          "i"
+        ),
+        action: { indentAction: languages.IndentAction.Indent },
+      },
+    ],
+
+    folding: {
+      markers: {
+        start: new RegExp("^\\s*<!--\\s*#region\\b.*-->"),
+        end: new RegExp("^\\s*<!--\\s*#endregion\\b.*-->"),
       },
     },
-    {
-      beforeText: new RegExp(
-        `<(?!(?:${EMPTY_ELEMENTS.join(
-          "|"
-        )}))(\\w[\\w\\d]*)([^/>]*(?!/)>)[^<]*$`,
-        "i"
-      ),
-      action: { indentAction: monaco.languages.IndentAction.Indent },
-    },
-  ],
+  });
+};
 
-  folding: {
-    markers: {
-      start: new RegExp("^\\s*<!--\\s*#region\\b.*-->"),
-      end: new RegExp("^\\s*<!--\\s*#endregion\\b.*-->"),
-    },
-  },
-});
-
- const initMonaco = (monaco, $node) => {
-  if (monaco) {
-    return monaco.create($node, {
+const initEditor = (editor, $node) => {
+  if (editor) {
+    editor.defineTheme("dgTheme", dgTheme);
+    return editor.create($node, {
       value: [
         `<div class="card" +loading="{a: '123', b: 1}" $watch="b++">`,
         "     ${a}",
@@ -435,21 +433,21 @@ monaco.languages.setLanguageConfiguration("daggerJs", {
         vertical: "hidden",
         horizontal: "hidden",
       },
-      wordWrap: 'on',
-      automaticLayout: true
+      wordWrap: "on",
+      automaticLayout: true,
     });
   }
 };
- const downloadCode=(monaco) => {
-    const url = getGeneratedPageURL(monaco.getModels()[0].getValue());
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "index.html";
-    a.click();
-    URL.revokeObjectURL(url);
-}
+const downloadCode = (editor) => {
+  const url = getGeneratedPageURL(editor.getModels()[0].getValue());
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "index.html";
+  a.click();
+  URL.revokeObjectURL(url);
+};
 
- const getGeneratedPageURL = (html) => {
+const getGeneratedPageURL = (html) => {
   const dagger_cdn = "https://cdn.jsdelivr.net/npm/@miyi/dagger.js@0.9.22";
   const getBlobURL = (code, type) => {
     const blob = new Blob([code], { type });
@@ -470,27 +468,29 @@ ${html || ""}
 
   return getBlobURL(source, "text/html");
 };
- const getData = (URI, monaco) => {
+const getData = (URI, editor) => {
   fetch(URI)
     .then((res) => res.text())
     .then((text) => {
-      monaco.getModels()[0].setValue(text);
+      editor.getModels()[0].setValue(text);
     });
 };
 
- const loadEditor = (code, $scope) => {
-  $scope.monaco.getModels()[0].setValue(code);
-  $scope.editorValue = $scope.editor.getValue();
+const loadEditor = (code, $scope) => {
+  $scope.editor.getModels()[0].setValue(code);
+  $scope.editorValue = $scope.editor.getModels()[0].getValue();
 };
 
- const resetEditor = (monaco) => {
-  let value =  [
-        `<div class="card" +loading="{a: '123', b: 1}" $watch="b++">`,
-        "     ${a}",
-        "     ${b}",
-        `</div>`,
-      ].join("\n");
-    monaco.getModels()[0].setValue(value);
-}
+const resetEditor = (edit) => {
+  editor.getModels()[0].setValue(value);
+};
 
-export {monacoEditor, initMonaco, downloadCode, getGeneratedPageURL, getData, loadEditor, resetEditor}
+export {
+  initLanguages,
+  initEditor,
+  downloadCode,
+  getGeneratedPageURL,
+  getData,
+  loadEditor,
+  resetEditor,
+};

@@ -19,21 +19,21 @@
       defer
     ></script>
     <script type="dagger/modules">
-            {
-              js: "./index.js",
-              inspection: "./inspection.js",
-              navbar: "./myModules/navbar.html",
-              lesson_styles: './lesson.css',
-              intro_directives: '/intro-directives/index.html',
-              esm_editor: {uri:'./monaco.esm.js', type: 'script', anonymous: false}
-            }
+      {
+        js: "./index.js",
+        inspection: "./inspection.js",
+        navbar: "./myModules/navbar.html",
+        lesson_styles: './lesson.css',
+        intro_directives: '/intro-directives/index.html',
+        esm_editor: {uri:'./monaco.esm.js', type: 'script', anonymous: false}
+      }
     </script>
   </head>
   <body
     dg-cloak
     +loading="{
-      monaco: null,
-      editor: null,
+      languages: esm_editor.languages,
+      editor: esm_editor.editor,
       editorValue: null,
       iframe: null,
       iframeBody: null,
@@ -42,7 +42,7 @@
       side: null,
       starting_code: null
     }"
-    +loaded="monaco=monacoEditor"
+    +loaded="initLanguages(languages)"
   >
     <div id="mySidepanel" class="sidepanel" +loaded="side=$node">
       <a
@@ -67,28 +67,31 @@
         <div>
           <button
             class="icon-button"
-            +click="editorValue=editor.getValue()"
+            +click="editorValue=editor.getModels()[0].getValue()"
             data-title="Run Code"
           >
             <span class="material-icons"> play_arrow </span>
           </button>
           <button
             class="icon-button"
-            +click="resetEditor(monaco)"
+            +click="loadEditor(starting_code, $scope)"
             data-title="Reset Code"
           >
             <span class="material-icons"> replay </span>
           </button>
           <button
             class="icon-button"
-            +click="downloadCode(monaco)"
+            +click="downloadCode(editor)"
             data-title="Download Code"
           >
             <span class="material-icons"> file_download</span>
           </button>
         </div>
 
-        <div class="editor" +loaded="editor=initMonaco(monaco, $node)"></div>
+        <div
+          class="editor"
+          +loaded="editor=initEditor(editor, $node)"
+        ></div>
       </div>
       <div class="handle"></div>
       <div class="box-column">
